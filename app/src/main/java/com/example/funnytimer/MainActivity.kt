@@ -2,6 +2,7 @@ package com.example.funnytimer
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -33,6 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.funnytimer.ui.theme.FunnyTimerTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,7 +45,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            colorfullSquares()
+            var corScope = rememberCoroutineScope()
+            var corScope2 = rememberCoroutineScope()
+
+            colorfullSquares(corScope,corScope2)
 
         }
     }
@@ -54,21 +60,22 @@ class MainActivity : ComponentActivity() {
 
 
 
-@SuppressLint("CoroutineCreationDuringComposition")
+
 @Composable
-fun colorfullSquares(){
+fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
+
     var num by rememberSaveable {
         mutableIntStateOf(0)
     }
-    var x by rememberSaveable{
-        mutableStateOf(0)
-    }
-    var corScope = rememberCoroutineScope()
-    corScope.launch {
     repeat(100) {
-        delay(1000)
-        num+=1
-    }
+            cor1.launch {
+            num += 1
+                delay(1000
+                )
+                }
+
+        Log.i("NUM", num.toString())
+
     }
 
     Box(Modifier.fillMaxSize()) {
@@ -76,29 +83,35 @@ fun colorfullSquares(){
     }
 
             Box(modifier = Modifier.fillMaxSize()) {
-                Column(modifier = Modifier.size(100.dp).fillMaxWidth()){
-                    repeat(if (num<10) num else num/10) {
-                    Row(modifier = Modifier.weight(0.1f)) {
-                    repeat(num % 10) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Row(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                        repeat(num % 10) {
 
                             Canvas(
                                 modifier = Modifier
-                                    .weight(0.1f)
-                                    .fillMaxHeight()
-                                    .offset(x.dp,0.dp)
+                                    .size(50.dp)
                             ) {
                                 drawRect(color = Color.Blue)
-                                corScope.launch {
-                                    delay(1000)
-                                    x+=50
-                                }
                             }
                         }
                     }
+                    }
+                    repeat(num / 10) {
+
+                        Row(modifier = Modifier.size(50.dp).fillMaxWidth()) {
+                                Canvas(
+                                    modifier = Modifier
+                                        .size(50.dp)
+                                ) {
+                                    drawRect(color = Color.Blue, size = this.size.div(1f))
+                                }
+
+                            }
+                        }
+
                 }
             }
-            }
-        }
+
 
 
 
