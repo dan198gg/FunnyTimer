@@ -40,6 +40,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +68,7 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
     var num by rememberSaveable {
         mutableIntStateOf(0)
     }
+    var rcolor= "${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}".toLong(16)
     LaunchedEffect(key1 = "launch") {
         cor1.launch {
 
@@ -87,36 +89,57 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
 
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(modifier = Modifier.fillMaxWidth()) {
+
+                    repeat(num / 10) {
+
+                        Row(modifier = Modifier
+                            .size(500.dp,38.dp)
+                            .fillMaxWidth()) {
+                            repeat(10) {
+                                Canvas(
+                                    modifier = Modifier
+                                        .size(38.dp)
+                                ) {
+
+                                    drawRect(
+                                        color = Color(
+                                            0xDD + ("${getRandomHex().toLong(16)}${
+                                                getRandomHex().toLong(
+                                                    16
+                                                )
+                                            }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
+                                                16
+                                            )
+                                        )
+                                    )
+
+
+                                }
+                            }
+
+                        }
+                    }
                     Row(modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()) {
                         repeat(num % 10) {
                             Canvas(
                                 modifier = Modifier
-                                    .size(50.dp)
+                                    .size(38.dp)
                             ) {
-                                drawRect(color = Color.Blue)
+                                drawRect(color = Color(0xDD+("${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(16)))
+                                Log.i("COLOR",getRandomHex())
                             }
                         }
                     }
                     }
-                    repeat(num / 10) {
-
-                        Row(modifier = Modifier
-                            .size(50.dp)
-                            .fillMaxWidth()) {
-                                Canvas(
-                                    modifier = Modifier
-                                        .size(50.dp)
-                                ) {
-                                    drawRect(color = Color.Blue, size = this.size.div(1f))
-                                }
-
-                            }
-                        }
 
                 }
             }
+
+fun getRandomHex() = Random.nextInt(255).toString(16).uppercase()
+
+
 
 
 
