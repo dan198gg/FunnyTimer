@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -47,7 +48,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             var corScope = rememberCoroutineScope()
             var corScope2 = rememberCoroutineScope()
-
             colorfullSquares(corScope,corScope2)
 
         }
@@ -67,15 +67,18 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
     var num by rememberSaveable {
         mutableIntStateOf(0)
     }
-    repeat(100) {
-            cor1.launch {
-            num += 1
-                delay(1000
-                )
-                }
+    LaunchedEffect(key1 = "launch") {
+        cor1.launch {
 
-        Log.i("NUM", num.toString())
+        repeat(100) {
 
+                num += 1
+                delay(1000)
+            }
+
+            Log.i("NUM", num.toString())
+
+        }
     }
 
     Box(Modifier.fillMaxSize()) {
@@ -84,9 +87,10 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
 
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                    Row(modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()) {
                         repeat(num % 10) {
-
                             Canvas(
                                 modifier = Modifier
                                     .size(50.dp)
@@ -98,7 +102,9 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
                     }
                     repeat(num / 10) {
 
-                        Row(modifier = Modifier.size(50.dp).fillMaxWidth()) {
+                        Row(modifier = Modifier
+                            .size(50.dp)
+                            .fillMaxWidth()) {
                                 Canvas(
                                     modifier = Modifier
                                         .size(50.dp)
