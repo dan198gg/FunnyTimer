@@ -127,7 +127,7 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
                                 modifier = Modifier
                                     .size(38.dp)
                             ) {
-                                drawRect(color = Color(0xDD+("${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(16)))
+                                drawRect(color = Color(0xDD + ("${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(16)))
                                 Log.i("COLOR",getRandomHex())
                             }
                         }
