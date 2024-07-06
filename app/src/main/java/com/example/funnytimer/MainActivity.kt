@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -93,12 +94,12 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
                     repeat(num / 10) {
 
                         Row(modifier = Modifier
-                            .size(500.dp,38.dp)
-                            .fillMaxWidth()) {
+                            .fillMaxWidth().height(40.dp)) {
                             repeat(10) {
                                 Canvas(
                                     modifier = Modifier
-                                        .size(38.dp)
+                                        .fillMaxSize()
+                                        .weight(0.1f)
                                 ) {
 
                                     drawRect(
@@ -120,12 +121,13 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
                         }
                     }
                     Row(modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()) {
+                        .fillMaxWidth().height(40.dp)){
                         repeat(num % 10) {
+
                             Canvas(
                                 modifier = Modifier
-                                    .size(38.dp)
+                                    .fillMaxSize()
+                                    .weight(0.1f)
                             ) {
                                 drawRect(color = Color(0xDD + ("${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(16)))
                                 Log.i("COLOR",getRandomHex())
