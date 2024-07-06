@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,16 +67,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
+    var layout= LocalConfiguration.current
+    var width=(layout.screenWidthDp/10)
+    var heigh=(layout.screenHeightDp/10)
 
     var num by rememberSaveable {
         mutableIntStateOf(0)
     }
+    var offsetSqw=0
+    var offsetSqh=0
     var rcolor= "${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}".toLong(16)
     LaunchedEffect(key1 = "launch") {
         cor1.launch {
 
         repeat(100) {
-
                 num += 1
                 delay(1000)
             }
@@ -85,56 +91,47 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
     }
 
     Box(Modifier.fillMaxSize()) {
-        Text(text = num.toString(), modifier = Modifier.align(Alignment.Center), fontSize = 240.sp)
+        Text(text = num.toString(), modifier = Modifier.align(Alignment.Center), fontSize = 200.sp)
     }
 
             Box(modifier = Modifier.fillMaxSize()) {
-                Column(modifier = Modifier.fillMaxWidth()) {
 
                     repeat(num / 10) {
-
-                        Row(modifier = Modifier
-                            .fillMaxWidth().height(40.dp)) {
                             repeat(10) {
-                                Canvas(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .weight(0.1f)
-                                ) {
+                    Box(modifier = Modifier
+                        .size(width = width.dp, heigh.dp)
+                        .offset(offsetSqw.dp, offsetSqh.dp)
+                        .background(
+                            Color(
+                                0xDD + ("${getRandomHex().toLong(16)}${
+                                    getRandomHex().toLong(16)
+                                }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
+                                    16
+                                )
+                            )
+                        ))
+                                offsetSqw+=width
+                    }
+                        offsetSqw=0
+                        offsetSqh+=heigh
 
-                                    drawRect(
-                                        color = Color(
-                                            0xDD + ("${getRandomHex().toLong(16)}${
-                                                getRandomHex().toLong(
-                                                    16
-                                                )
-                                            }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
-                                                16
-                                            )
+                        repeat(num % 10) {
+                            Box(modifier = Modifier
+                                .size(width = width.dp, heigh.dp)
+                                .offset(offsetSqw.dp, offsetSqh.dp)
+                                .background(
+                                    Color(
+                                        0xDD + ("${getRandomHex().toLong(16)}${
+                                            getRandomHex().toLong(16)
+                                        }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
+                                            16
                                         )
                                     )
-
-
-                                }
-                            }
-
+                                ))
+                            offsetSqw+=width
                         }
                     }
-                    Row(modifier = Modifier
-                        .fillMaxWidth().height(40.dp)){
-                        repeat(num % 10) {
 
-                            Canvas(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .weight(0.1f)
-                            ) {
-                                drawRect(color = Color(0xDD + ("${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(16)))
-                                Log.i("COLOR",getRandomHex())
-                            }
-                        }
-                    }
-                    }
 
                 }
             }
