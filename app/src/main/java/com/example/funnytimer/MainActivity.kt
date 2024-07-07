@@ -97,24 +97,26 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
             Box(modifier = Modifier.fillMaxSize()) {
 
                     repeat(num / 10) {
-                            repeat(10) {
-                    Box(modifier = Modifier
-                        .size(width = width.dp, heigh.dp)
-                        .offset(offsetSqw.dp, offsetSqh.dp)
-                        .background(
-                            Color(
-                                0xDD + ("${getRandomHex().toLong(16)}${
-                                    getRandomHex().toLong(16)
-                                }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
-                                    16
-                                )
+                        repeat(10) {
+                            Box(
+                                modifier = Modifier
+                                    .size(width = width.dp, heigh.dp)
+                                    .offset(offsetSqw.dp, offsetSqh.dp)
+                                    .background(
+                                        Color(
+                                            0xDD + ("${getRandomHex().toLong(16)}${
+                                                getRandomHex().toLong(16)
+                                            }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
+                                                16
+                                            )
+                                        )
+                                    )
                             )
-                        ))
-                                offsetSqw+=width
+                            offsetSqw += width
+                        }
+                        offsetSqw = 0
+                        offsetSqh += heigh
                     }
-                        offsetSqw=0
-                        offsetSqh+=heigh
-
                         repeat(num % 10) {
                             Box(modifier = Modifier
                                 .size(width = width.dp, heigh.dp)
@@ -130,7 +132,7 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
                                 ))
                             offsetSqw+=width
                         }
-                    }
+
 
 
                 }
