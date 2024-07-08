@@ -26,6 +26,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+
+
+
+
+
+
+
+
+
+
+
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -51,8 +63,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             var corScope = rememberCoroutineScope()
-            var corScope2 = rememberCoroutineScope()
-            colorfullSquares(corScope,corScope2)
+            colorfullSquares(corScope)
 
         }
     }
@@ -66,7 +77,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
+fun colorfullSquares(cor1:CoroutineScope){
     var layout= LocalConfiguration.current
     var width=(layout.screenWidthDp/10)
     var heigh=(layout.screenHeightDp/10)
@@ -76,7 +87,9 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
     }
     var offsetSqw=0
     var offsetSqh=0
-    var rcolor= "${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}".toLong(16)
+    var rcolor by remember {
+        mutableStateOf<MutableList<Color>>(mutableListOf())
+    }
     LaunchedEffect(key1 = "launch") {
         cor1.launch {
 
@@ -96,45 +109,24 @@ fun colorfullSquares(cor1:CoroutineScope,cor2:CoroutineScope){
 
             Box(modifier = Modifier.fillMaxSize()) {
 
-                    repeat(num / 10) {
-                        repeat(10) {
-                            Box(
-                                modifier = Modifier
-                                    .size(width = width.dp, heigh.dp)
-                                    .offset(offsetSqw.dp, offsetSqh.dp)
-                                    .background(
-                                        Color(
-                                            0xDD + ("${getRandomHex().toLong(16)}${
-                                                getRandomHex().toLong(16)
-                                            }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
-                                                16
-                                            )
-                                        )
-                                    )
-                            )
-                            offsetSqw += width
-                        }
-                        offsetSqw = 0
-                        offsetSqh += heigh
-                    }
-                        repeat(num % 10) {
-                            Box(modifier = Modifier
+                    repeat(num) {
+                        rcolor.add(Color(0xDD + ("${getRandomHex().toLong(16)}${
+                            getRandomHex().toLong(16)
+                        }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
+                            16
+                        ))
+                        )
+                        Box(
+                            modifier = Modifier
                                 .size(width = width.dp, heigh.dp)
                                 .offset(offsetSqw.dp, offsetSqh.dp)
                                 .background(
-                                    Color(
-                                        0xDD + ("${getRandomHex().toLong(16)}${
-                                            getRandomHex().toLong(16)
-                                        }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
-                                            16
-                                        )
-                                    )
-                                ))
-                            offsetSqw+=width
-                        }
-
-
-
+                                    rcolor[num-1]
+                                    
+                                )
+                        )
+                        offsetSqw+=width
+                    }
                 }
             }
 
