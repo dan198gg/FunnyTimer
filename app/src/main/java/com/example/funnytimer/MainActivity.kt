@@ -124,8 +124,16 @@ fun colorfullSquares(cor1:CoroutineScope){
 
                                 )
                         )
-                        offsetSqw+=width
+
+                    offsetSqw+=width
+                    if (num1%10==9){
+                        offsetSqh+=heigh
+                        offsetSqw=0
                     }
+
+
+                    }
+
                 }
             }
 
