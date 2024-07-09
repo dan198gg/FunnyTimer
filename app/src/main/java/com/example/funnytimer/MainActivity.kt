@@ -93,7 +93,7 @@ fun colorfullSquares(cor1:CoroutineScope){
     LaunchedEffect(key1 = "launch") {
         cor1.launch {
 
-        repeat(100) {
+        repeat(1000) {
                 num += 1
                 delay(1000)
             }
@@ -108,8 +108,7 @@ fun colorfullSquares(cor1:CoroutineScope){
     }
 
             Box(modifier = Modifier.fillMaxSize()) {
-
-                    repeat(num) {
+                for(num1 in 0..num-1 ){
                         rcolor.add(Color(0xDD + ("${getRandomHex().toLong(16)}${
                             getRandomHex().toLong(16)
                         }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
@@ -121,8 +120,8 @@ fun colorfullSquares(cor1:CoroutineScope){
                                 .size(width = width.dp, heigh.dp)
                                 .offset(offsetSqw.dp, offsetSqh.dp)
                                 .background(
-                                    rcolor[num-1]
-                                    
+                                    rcolor[num1]
+
                                 )
                         )
                         offsetSqw+=width
