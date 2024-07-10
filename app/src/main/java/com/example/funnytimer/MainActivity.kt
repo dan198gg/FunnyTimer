@@ -1,5 +1,4 @@
 package com.example.funnytimer
-
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -64,7 +63,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             var corScope = rememberCoroutineScope()
             colorfullSquares(corScope)
-
         }
     }
 }
@@ -72,28 +70,23 @@ class MainActivity : ComponentActivity() {
 
 
 
-
-
-
-
 @Composable
-fun colorfullSquares(cor1:CoroutineScope){
-    var layout= LocalConfiguration.current
-    var width=(layout.screenWidthDp/10)
-    var heigh=(layout.screenHeightDp/10)
-
+fun colorfullSquares(cor1:CoroutineScope) {
+    var layout = LocalConfiguration.current
+    var width = (layout.screenWidthDp / 10)
+    var heigh = (layout.screenHeightDp / 10)
     var num by rememberSaveable {
         mutableIntStateOf(0)
     }
-    var offsetSqw=0
-    var offsetSqh=0
+    var offsetSqw = 0
+    var offsetSqh = 0
     var rcolor by remember {
         mutableStateOf<MutableList<Color>>(mutableListOf())
     }
     LaunchedEffect(key1 = "launch") {
         cor1.launch {
 
-        repeat(1000) {
+            repeat(100) {
                 num += 1
                 delay(1000)
             }
@@ -102,40 +95,35 @@ fun colorfullSquares(cor1:CoroutineScope){
 
         }
     }
-
     Box(Modifier.fillMaxSize()) {
         Text(text = num.toString(), modifier = Modifier.align(Alignment.Center), fontSize = 200.sp)
-    }
-
-            Box(modifier = Modifier.fillMaxSize()) {
-                for(num1 in 0..num-1 ){
-                        rcolor.add(Color(0xDD + ("${getRandomHex().toLong(16)}${
-                            getRandomHex().toLong(16)
-                        }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
-                            16
-                        ))
-                        )
-                        Box(
-                            modifier = Modifier
-                                .size(width = width.dp, heigh.dp)
-                                .offset(offsetSqw.dp, offsetSqh.dp)
-                                .background(
-                                    rcolor[num1]
-
-                                )
-                        )
-
-                    offsetSqw+=width
-                    if (num1%10==9){
-                        offsetSqh+=heigh
-                        offsetSqw=0
-                    }
-
-
-                    }
-
-                }
+        for (num1 in 0..num - 1) {
+            rcolor.add(
+                Color(
+                    0xDD + ("${getRandomHex().toLong(16)}${
+                        getRandomHex().toLong(16)
+                    }${getRandomHex().toLong(16)}${getRandomHex().toLong(16)}").toLong(
+                        16
+                    )
+                )
+            )
+            Box(
+                modifier = Modifier
+                    .size(width = width.dp, heigh.dp)
+                    .offset(offsetSqw.dp, offsetSqh.dp)
+                    .background(
+                        rcolor[num1]
+                    )
+            )
+            offsetSqw += width
+            if (num1 % 10 == 9) {
+                offsetSqh += heigh
+                offsetSqw = 0
             }
+        }
+    }
+}
+
 
 fun getRandomHex() = Random.nextInt(255).toString(16).uppercase()
 
